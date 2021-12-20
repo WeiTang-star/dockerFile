@@ -18,15 +18,15 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./es01/data:/usr/share/elasticsearch/data
-      - ./es01/logs:/usr/share/elasticsearch/logs
-      - ./es01/plugins:/usr/share/elasticsearch/plugins
+      - ../dockerFileData/elasticsearch/es01/data:/usr/share/elasticsearch/data
+      - ../dockerFileData/elasticsearch/es01/logs:/usr/share/elasticsearch/logs
+      - ../dockerFileData/elasticsearch/es01/plugins:/usr/share/elasticsearch/plugins
     ports:
       - 9200:9200
       - 9300:9300
     networks:
       default:
-        ipv4_address: 172.23.0.25
+        ipv4_address: 172.23.0.18
 
   # es02:
   #   platform: linux/x86_64
@@ -93,7 +93,7 @@ services:
     #   - es01
     networks:
       default:
-        ipv4_address: 172.23.0.26
+        ipv4_address: 172.23.0.19
 
 
   # # cerebro.yml
@@ -112,4 +112,4 @@ services:
 networks:
   default:
     external:
-      name: zookeeper_network
+      name: tang_network
