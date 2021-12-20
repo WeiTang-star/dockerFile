@@ -78,22 +78,22 @@ services:
   #     default:
   #       ipv4_address: 172.23.0.22
 
-  kibana:
-    image: arm64v8/kibana:7.14.1
-    container_name: kibana
-    environment:
-      - SERVER_NAME=kibana
-      - ELASTICSEARCH_HOSTS=http://172.23.0.18:9200
-      - XPACK_MONITORING_ENABLED=true
-    ports:
-      - 5601:5601
-    # links: # 连接本compose文件创建的container
-    #   - es01
-    # depends_on:
-    #   - es01
-    networks:
-      default:
-        ipv4_address: 172.23.0.19
+#  kibana:
+#    image: arm64v8/kibana:7.14.1
+#    container_name: kibana
+#    environment:
+#      - SERVER_NAME=kibana
+#      - ELASTICSEARCH_HOSTS=http://172.23.0.18:9200
+#      - XPACK_MONITORING_ENABLED=true
+#    ports:
+#      - 5601:5601
+#    # links: # 连接本compose文件创建的container
+#    #   - es01
+#    # depends_on:
+#    #   - es01
+#    networks:
+#      default:
+#        ipv4_address: 172.23.0.19
 
 
   # # cerebro.yml
@@ -108,6 +108,13 @@ services:
   #   networks:
   #     default:
   #       ipv4_address: 172.23.0.24
+
+  es-head:
+    image: mobz/elasticsearch-head:5
+    container_name: elasticsearch-head
+    restart: always
+    ports:
+      - 9100:9100
 
 networks:
   default:
