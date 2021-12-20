@@ -1,13 +1,13 @@
-version: '3' 
+version: '3'
 services:
-  # nacos-server服务注册与发现，配置中心服务    
+  # nacos-server服务注册与发现，配置中心服务
   nacos1:
     platform: linux/x86_64
     hostname: nacos1
     container_name: nacos1
     image: zill057/nacos-server-apple-silicon:2.0.3
     volumes:
-      - ./cluster-logs/nacos1:/home/nacos/logs #日志输出目录
+      - ../dockerFileData/nacos/cluster-logs/nacos1:/home/nacos/logs #日志输出目录
     ports:
       - "8848:8848"
       - "9555:9555"
@@ -17,8 +17,8 @@ services:
     restart: always
     networks:
       default:
-        ipv4_address: 172.23.0.16
-  
+        ipv4_address: 172.23.0.17
+
   # nacos2:
   #   hostname: nacos2
   #   container_name: nacos2
@@ -34,7 +34,7 @@ services:
   #   networks:
   #     default:
   #       ipv4_address: 172.23.0.17
-  
+
   # nacos3:
   #   hostname: nacos3
   #   container_name: nacos3
@@ -50,8 +50,8 @@ services:
   #   networks:
   #     default:
   #       ipv4_address: 172.23.0.18
-  
+
 networks:
   default:
     external:
-      name: zookeeper_network
+      name: tang_network
