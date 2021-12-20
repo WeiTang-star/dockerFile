@@ -17,12 +17,12 @@ services:
     ports:
       - 3307:3306
     volumes:
-     - ./mysql01/data:/var/lib/mysql
-     - ./mysql01/conf:/etc/mysql/mysql.conf.d
+     - ../dockerFileData/mysql/mysql01/data:/var/lib/mysql
+     - ../dockerFileData/mysql/mysql01/conf:/etc/mysql/mysql.conf.d
     networks:
       default:
-        ipv4_address: 172.23.0.15
+        ipv4_address: 172.23.0.16
 networks:
   default:
     external:
-      name: zookeeper_network
+      name: tang_network
