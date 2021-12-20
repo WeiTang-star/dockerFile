@@ -9,14 +9,14 @@ services:
     ports:
       - 2181:2181
     volumes:
-      - ./zoo1/data:/data
-      - ./zoo1/datalog:/datalog
+      - ../dockerFileData/zookeeper/zoo1/data:/data
+      - ../dockerFileData/zookeeper/zoo1/datalog:/datalog
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
     networks:
       default:
-        ipv4_address: 172.23.0.17
+        ipv4_address: 172.23.0.11
 
   zoo2:
     platform: linux/x86_64
@@ -27,14 +27,14 @@ services:
     ports:
       - 2182:2181
     volumes:
-      - ./zoo2/data:/data
-      - ./zoo2/datalog:/datalog
+      - ../dockerFileData/zookeeper/zoo2/data:/data
+      - ../dockerFileData/zookeeper/zoo2/datalog:/datalog
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
     networks:
       default:
-        ipv4_address: 172.23.0.18
+        ipv4_address: 172.23.0.12
 
   zoo3:
     platform: linux/x86_64
@@ -45,16 +45,16 @@ services:
     ports:
       - 2183:2181
     volumes:
-      - ./zoo3/data:/data
-      - ./zoo3/datalog:/datalog
+      - ../dockerFileData/zookeeper/zoo3/data:/data
+      - ../dockerFileData/zookeeper/zoo3/datalog:/datalog
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
     networks:
       default:
-        ipv4_address: 172.23.0.19
+        ipv4_address: 172.23.0.13
 
 networks:
   default:
     external:
-      name: zookeeper_network
+      name: tang_network
