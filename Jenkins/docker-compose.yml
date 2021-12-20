@@ -1,0 +1,29 @@
+version: '3'
+services:
+  jenkins:
+    restart: always
+    user: 1000:1000
+    privileged: true
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    expose:
+      - "8080"
+      - "50000"
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    environment:
+      JAVA_OPTS: "-Djava.awt.headless=true -Duser.timezone=Asia/Shanghai"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # 将宿主机的 Docker 程序挂载到 Jenkins 容器内部 which docker
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - ./jenkins:/var/jenkins_home
+    networks:
+      default:
+        ipv4_address: 172.23.0.30
+
+networks:
+  default:
+    external:
+      name: zookeeper_network

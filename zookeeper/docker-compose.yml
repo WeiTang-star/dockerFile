@@ -1,0 +1,60 @@
+version: "3"
+services:
+  zoo1:
+    platform: linux/x86_64
+    image: zookeeper:3.4
+    container_name: zookeeper_1
+    hostname: zoo1
+    restart: always
+    ports:
+      - 2181:2181
+    volumes:
+      - ./zoo1/data:/data
+      - ./zoo1/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      default:
+        ipv4_address: 172.23.0.17
+
+  zoo2:
+    platform: linux/x86_64
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo2
+    container_name: zookeeper_2
+    ports:
+      - 2182:2181
+    volumes:
+      - ./zoo2/data:/data
+      - ./zoo2/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+    networks:
+      default:
+        ipv4_address: 172.23.0.18
+
+  zoo3:
+    platform: linux/x86_64
+    image: zookeeper:3.4
+    restart: always
+    hostname: zoo3
+    container_name: zookeeper_3
+    ports:
+      - 2183:2181
+    volumes:
+      - ./zoo3/data:/data
+      - ./zoo3/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+    networks:
+      default:
+        ipv4_address: 172.23.0.19
+
+networks:
+  default:
+    external:
+      name: zookeeper_network

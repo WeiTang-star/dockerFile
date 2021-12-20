@@ -1,0 +1,21 @@
+version: '3.0'
+services:
+  redis01:
+    image: redis:6.2.5
+    container_name: redis01
+    restart: always
+    ports:
+      - 6380:6379
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf:rw
+      - ./redis01/data:/data:rw
+    command:
+      redis-server /etc/redis/redis.conf --appendonly yes --requirepass 6200152
+    networks:
+      default:
+        ipv4_address: 172.23.0.14
+
+networks:
+  default:
+    external: 
+      name: zookeeper_network

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  sonar:
+    platform: linux/x86_64
+    image: sonarqube
+    restart: always
+    container_name: sonarqube
+    environment:
+     - sonar.jdbc.username=root
+     - sonar.jdbc.password=6200152
+     - sonar.jdbc.url=jdbc:postgresql://172.23.0.11:5432/sonarqube
+     - sonar.search.javaOpts=-Xms256m -Xmx256m
+     - sonar.search.javaAdditionalOpts=-Dbootstrap.system_call_filter=false
+    ports:
+      - 9000:9000
+    volumes:
+     - ./sonarqube/extensions:/opt/sonarqube/extensions
+     - ./sonarqube/logs:/opt/sonarqube/logs
+     - ./sonarqube/data:/opt/sonarqube/data
+     - ./sonarqube/conf:/opt/sonarqube/conf
+    networks:
+      default:
+        ipv4_address: 172.23.0.12
+
+networks:
+  default:
+    external:
+      name: zookeeper_network

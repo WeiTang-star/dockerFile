@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: postgres:10.1
+    restart: always
+    container_name: pgsql01
+    environment:
+      POSTGRES_PASSWORD: 6200152
+      PG_SYSTEM_SHARED_BUFFERS: 256MB
+      PG_SYSTEM_MAX_CONNECTIONS: 200
+      PGDATA: /var/lib/postgresql/data/pgdata
+    command: ["-c", "shared_buffers=256MB", "-c", "max_connections=200"]
+    ports:
+      - 5433:5432
+    volumes:
+     - ./pgsql01/data/pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      default:
+        ipv4_address: 172.23.0.11
+
+networks:
+  default:
+    external:
+      name: zookeeper_network

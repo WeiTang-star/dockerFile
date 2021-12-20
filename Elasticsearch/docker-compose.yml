@@ -1,0 +1,115 @@
+version: '3'
+services:
+  es01:
+    image: arm64v8/elasticsearch:7.14.1
+    container_name: es01
+    restart: always
+    environment:
+      # 开启内存锁定
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms64m -Xmx128m
+      - discovery.type=single-node
+      - node.name=node-01
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      # 取消内存相关限制  用于开启内存锁定
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./es01/data:/usr/share/elasticsearch/data
+      - ./es01/logs:/usr/share/elasticsearch/logs
+      - ./es01/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      default:
+        ipv4_address: 172.23.0.25
+
+  # es02:
+  #   platform: linux/x86_64
+  #   image: elasticsearch:7.8.0
+  #   container_name: es02
+  #   environment:
+  #     - cluster.name=esdocker-cluster
+  #     - node.name=node-02
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms200m -Xmx200m"
+  #     - "discovery.zen.ping.unicast.hosts=es01"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - ./es02:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9201:9200
+  #     - 9301:9300
+  #   depends_on:
+  #     - es01
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.23.0.21
+
+  # es03:
+  #   platform: linux/x86_64
+  #   image: elasticsearch:7.8.0
+  #   container_name: es03
+  #   environment:
+  #     - cluster.name=esdocker-cluster
+  #     - node.name=node-03
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms200m -Xmx200m"
+  #     - "discovery.zen.ping.unicast.hosts=es01"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - ./es03:/usr/share/elasticsearch/data
+  #   ports:
+  #     - 9202:9200
+  #     - 9302:9300
+  #   depends_on:
+  #     - es01
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.23.0.22
+
+  kibana:
+    image: arm64v8/kibana:7.14.1
+    container_name: kibana
+    environment:
+      - SERVER_NAME=kibana
+      - ELASTICSEARCH_HOSTS=http://172.23.0.25:9200
+      - XPACK_MONITORING_ENABLED=true
+    ports:
+      - 5601:5601
+    # links: # 连接本compose文件创建的container
+    #   - es01
+    # depends_on:
+    #   - es01
+    networks:
+      default:
+        ipv4_address: 172.23.0.26
+
+
+  # # cerebro.yml
+  # cerebro:
+  #   image: lmenezes/cerebro:0.9.2
+  #   container_name: cerebro
+  #   restart: always
+  #   ports:
+  #     - "9000:9000"
+  #   command:
+  #     - -Dhosts.0.host=http://es01:9200
+  #   networks:
+  #     default:
+  #       ipv4_address: 172.23.0.24
+
+networks:
+  default:
+    external:
+      name: zookeeper_network

@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongodb
+    ports:
+     - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 6200152
+    volumes:
+     - ./mongo/db:/data/db # 挂载数据目录
+     - ./mongo/log:/var/log/mongodb  # 挂载日志目录
+     - ./mongo/config:/etc/mongo  # 挂载配置目录
+    # command: --config ./mongod.conf # 配置文件
