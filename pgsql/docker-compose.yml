@@ -13,12 +13,12 @@ services:
     ports:
       - 5433:5432
     volumes:
-     - ./pgsql01/data/pgdata:/var/lib/postgresql/data/pgdata
+     - ../dockerFileData/postgres/pgsql01/data/pgdata:/var/lib/postgresql/data/pgdata
     networks:
       default:
-        ipv4_address: 172.23.0.11
+        ipv4_address: 172.23.0.14
 
 networks:
   default:
     external:
-      name: zookeeper_network
+      name: tang_network
