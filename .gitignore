@@ -1,2 +1,4 @@
 # compiled output
 /dockerFileData
+./.idea
+.DS_Store
