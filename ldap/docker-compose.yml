@@ -15,6 +15,9 @@ services:
     volumes:
      - ../dockerFileData/openldap/data:/var/lib/ldap
      - ../dockerFileData/openldap/config:/etc/ldap/slapd.d
+    networks:
+      default:
+        ipv4_address: 172.23.0.20
 
   phpldapadmin:
     container_name: phpldapadmin
@@ -23,10 +26,34 @@ services:
     environment:
       PHPLDAPADMIN_HTTPS: "false"
       PHPLDAPADMIN_LDAP_HOSTS: openldap
-      LANGUAGE: "zh_CN"
     ports:
       - '30004:80'
     depends_on:
       - openldap
+    networks:
+      default:
+        ipv4_address: 172.23.0.21
+
+  ldapaccountmanager:
+    container_name: ldapaccountmanager
+    image: ldapaccountmanager/lam:latest
+    restart: always
+    environment:
+      LAM_SKIP_PRECONFIGURE: "true"
+    ports:
+      - '30005:80'
+    depends_on:
+      - openldap
+    volumes:
+      - ../dockerFileData/ldapaccountmanager/config:/etc/ldap-account-manager
+      - ../dockerFileData/ldapaccountmanager/data:/var/lib/ldap-account-manager
+    networks:
+      default:
+        ipv4_address: 172.23.0.22
+
+networks:
+  default:
+    external:
+      name: tang_network
 
 #详细文档 https://docs.spring.io/spring-ldap/docs/current/reference/#preface
