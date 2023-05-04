@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db2:
+    platform: linux/amd64
+    image: ankane/pgvector
+    restart: always
+    container_name: pgvector
+    environment:
+      POSTGRES_PASSWORD: 6200152
+      PG_SYSTEM_SHARED_BUFFERS: 256MB
+      PG_SYSTEM_MAX_CONNECTIONS: 200
+      PGDATA: /var/lib/pgvector/data/pgdata
+    command: ["-c", "shared_buffers=256MB", "-c", "max_connections=200"]
+    ports:
+      - 5434:5432
+    volumes:
+     - ../dockerFileData/pgvector/data/pgdata:/var/lib/pgvector/data/pgdata
+    networks:
+      default:
+        ipv4_address: 172.23.0.21
+
+networks:
+  default:
+    external:
+      name: tang_network

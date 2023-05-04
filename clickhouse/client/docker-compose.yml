@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  click_server:
+    platform: linux/amd64
+    image: clickhouse/clickhouse-server
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+      - "9009:9009"
+    volumes:
+      - ../dockerFileData/clickhouse/dbfiles:/var/lib/clickhouse
+    networks:
+      default:
+        ipv4_address: 172.23.0.19
+
+networks:
+  default:
+    external:
+      name: tang_network
